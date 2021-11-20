@@ -6,7 +6,7 @@ const previousVersionFilePath = 'slack-message/current-versions.json';
 
 let rawdata = fs.readFileSync(previousVersionFilePath);
 let previousVersion = JSON.parse(rawdata);
-console.log(previousVersion);
+console.log(previousVersion[0].name);
 
 try {
   const cmd = 'lerna ls --json';
