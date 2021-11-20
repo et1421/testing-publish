@@ -1,0 +1,13 @@
+{
+  "name": "@et1421/testing-publish2",
+  "version": "0.0.15",
+  "description": "A",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=14.7"
+  },
+  "gitHead": "c0356a9b8a6e0b88131d2cc3265a4c36d95335c3"
+}
