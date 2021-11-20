@@ -13,7 +13,7 @@ async function postToSlack(text) {
     blocks: [
       {
         type: 'section',
-        text: { type: 'mrkdwn', text: 'A new version of the design system was just published :rocket:. Please, *update* your packages locally.' },
+        text: { type: 'mrkdwn', text: 'A new version of the design system was just published :rocket:.\nPlease, *update* your packages locally.' },
       },
       {
         type: 'section',
@@ -40,6 +40,8 @@ const getVersionsUpdate = (newVersions) => {
       text += `*${i.name}:* ${encodeURIComponent(previousVersions[i.name])} ---> ${i.version}\n`;
     }
   });
+
+  console.log('text', text);
 
   return text;
 }
