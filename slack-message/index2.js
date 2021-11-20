@@ -20,8 +20,8 @@ async function postToSlack(text) {
         text: { type: 'mrkdwn', text: text },
       },
     ],
-    unfurl_links: false,
     username: 'Bit Design system',
+    link_names: false,
     icon_emoji: ':rocket:'
   }, { headers: { authorization: `Bearer ${process.env.SLACK_TOKEN}` } });
 
