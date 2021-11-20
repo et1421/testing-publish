@@ -14,7 +14,7 @@ try {
     console.log('i.version', i.version);
     console.log('previousVersion[i.name]', previousVersion[i.name]);
     if (i.version !== previousVersion[i.name]) {
-      console.log('new version', );
+      console.log('New version published', `${i.name}: ${previousVersion[i.name]} ---> ${i.version}`);
     }
   });
 
