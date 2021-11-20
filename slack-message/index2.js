@@ -10,9 +10,6 @@ try {
   const newVersions = JSON.parse(execSync(cmd).toString());
 
   newVersions.forEach(i => {
-
-    console.log('i.version', i.version);
-    console.log('previousVersion[i.name]', previousVersion[i.name]);
     if (i.version !== previousVersion[i.name]) {
       console.log('New version published', `${i.name}: ${previousVersion[i.name]} ---> ${i.version}`);
     }
@@ -24,4 +21,3 @@ try {
 } catch (error) {
   console.log(`Status Code: ${error.status} with '${error.message}'`);
 }
-console.log('version-------------------------------------')
