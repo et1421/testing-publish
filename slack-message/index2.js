@@ -3,6 +3,6 @@ const { execSync } = require('child_process');
 
 
 console.log('version-------------------------------------')
-execSync("lerna version");
+execSync("lerna ls");
 
 console.log('version-------------------------------------')
