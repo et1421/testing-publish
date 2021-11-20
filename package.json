@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "A slack bot for lerna notifying publish statuses",
   "main": "index.js",
+  "scripts": {
+    "postpublish": "console.log('TEST-------------------')"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/et1421/testing-publish.git"
