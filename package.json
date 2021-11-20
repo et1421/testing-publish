@@ -4,7 +4,7 @@
   "description": "A slack bot for lerna notifying publish statuses",
   "main": "index.js",
   "scripts": {
-    "postpublish": "console.log('TEST-------------------')"
+    "postpublish": "node slack-message/index.js"
   },
   "repository": {
     "type": "git",
