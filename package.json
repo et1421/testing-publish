@@ -4,8 +4,8 @@
   "description": "A slack bot for lerna notifying publish statuses",
   "main": "index.js",
   "scripts": {
-    "postpublish": "node slack-message/index.js",
-    "postpack ": "node slack-message/index2.js"
+    "prepublishOnly ": "node slack-message/index2.js",
+    "postpublish": "node slack-message/index.js"
   },
   "repository": {
     "type": "git",
