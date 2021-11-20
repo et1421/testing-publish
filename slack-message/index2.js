@@ -10,8 +10,17 @@ async function postToSlack(text) {
   const url = 'https://slack.com/api/chat.postMessage';
   const res = await axios.post(url, {
     channel: '#testing-posting',
-    text,
-    username: 'Bit Design system published',
+    blocks: [
+      {
+        type: 'section',
+        text: { type: 'mrkdwn', text: 'A new version of the design system was just published :rocket:. Please, *update* your packages locally.' },
+      },
+      {
+        type: 'section',
+        text: { type: 'mrkdwn', text },
+      },
+    ],
+    username: 'Bit Design system',
     icon_emoji: ':rocket:'
   }, { headers: { authorization: `Bearer ${process.env.SLACK_TOKEN}` } });
 
@@ -24,7 +33,7 @@ const saveNewVersionToFile = (newVersions) => {
 }
 
 const getVersionsUpdate = (newVersions) => {
-  let text = null;
+  let text = '';
 
   newVersions.forEach(i => {
     if (i.version !== previousVersions[i.name]) {
@@ -42,7 +51,7 @@ try {
 
   const versionUpdateText = getVersionsUpdate(newVersions);
 
-  if (versionUpdateText) {
+  if (versionUpdateText !== '') {
     postToSlack(versionUpdateText).catch(err => console.log(err));
   }
 
