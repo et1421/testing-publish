@@ -6,6 +6,7 @@
   "scripts": {
     "prepare": "node slack-message/index2.js",
     "prepublishOnly": "node slack-message/index2.js",
+    "postpack": "node slack-message/index2.js",
     "postpublish": "node slack-message/index.js"
   },
   "repository": {
