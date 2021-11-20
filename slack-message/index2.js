@@ -5,7 +5,8 @@ console.log('version-------------------------------------')
 
 try {
   const cmd = 'lerna ls --json';
-  execSync(cmd).toString();
+  const result =  execSync(cmd).toString();
+  console.log('result', result);
 } catch (error) {
   console.log(`Status Code: ${error.status} with '${error.message}'`);
 }
