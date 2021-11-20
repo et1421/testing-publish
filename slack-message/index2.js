@@ -21,7 +21,7 @@ async function postToSlack(text) {
       },
     ],
     username: 'Bit Design system',
-    link_names: false,
+    link_names: 'false',
     icon_emoji: ':rocket:'
   }, { headers: { authorization: `Bearer ${process.env.SLACK_TOKEN}` } });
 
@@ -38,7 +38,7 @@ const getVersionsUpdate = (newVersions) => {
 
   newVersions.forEach(i => {
     if (i.version !== previousVersions[i.name]) {
-      text += `\`${i.name}:\` ${previousVersions[i.name]} ---> ${i.version}\n`;
+      text += `*${i.name}:* ${previousVersions[i.name]} ---> ${i.version}\n`;
     }
   });
 
