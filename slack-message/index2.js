@@ -1,21 +1,27 @@
-const { exec } = require("child_process");
 const { execSync } = require('child_process');
 const fs = require('fs');
 
-const previousVersionFilePath = 'slack-message/current-versions.json';
+const previousVersionsFilePath = 'slack-message/current-versions.json';
 
-let rawdata = fs.readFileSync(previousVersionFilePath);
-let previousVersion = JSON.parse(rawdata);
-console.log(previousVersion[0].name);
+const previousVersion = JSON.parse(fs.readFileSync(previousVersionsFilePath));
 
 try {
   const cmd = 'lerna ls --json';
-  const result =  execSync(cmd).toString();
-  // console.log('result', result);
+  const newVersions = JSON.parse(execSync(cmd).toString());
 
-  fs.writeFileSync(previousVersionFilePath, result);
+  newVersions.forEach(i => {
+
+    console.log('i.version', i.version);
+    console.log('previousVersion[i.name]', previousVersion[i.name]);
+    if (i.version !== previousVersion[i.name]) {
+      console.log('new version', );
+    }
+  });
+
+  const newVersionsAsObject = newVersions.reduce((obj, item) => ({...obj, [item.name]: item.version}), {});
+
+  fs.writeFileSync(previousVersionsFilePath, JSON.stringify(newVersionsAsObject));
 } catch (error) {
   console.log(`Status Code: ${error.status} with '${error.message}'`);
 }
-
 console.log('version-------------------------------------')

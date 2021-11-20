@@ -1,14 +1,1 @@
-[
-  {
-    "name": "@et1421/testing-publish",
-    "version": "0.0.28",
-    "private": false,
-    "location": "D:\\Web\\eds-www\\lerna-postpublish-slack\\packages\\testing-publish"
-  },
-  {
-    "name": "@et1421/testing-publish2",
-    "version": "0.0.28",
-    "private": false,
-    "location": "D:\\Web\\eds-www\\lerna-postpublish-slack\\packages\\testing-publish2"
-  }
-]
+{"@et1421/testing-publish":"0.0.29","@et1421/testing-publish2":"0.0.29"}
