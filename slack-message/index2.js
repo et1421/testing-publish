@@ -1,6 +1,8 @@
 const { exec } = require("child_process");
+const { execSync } = require('child_process');
+
 
 console.log('version-------------------------------------')
-exec("lerna version");
+execSync("lerna version");
 
 console.log('version-------------------------------------')
