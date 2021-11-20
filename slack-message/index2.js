@@ -37,7 +37,7 @@ const getVersionsUpdate = (newVersions) => {
 
   newVersions.forEach(i => {
     if (i.version !== previousVersions[i.name]) {
-      text += `*${encodeURIComponent(i.name)}:* ${previousVersions[i.name]} ---> ${i.version}\n`;
+      text += `*${i.name.replace('@', '&commat;')}:* ${previousVersions[i.name]} ---> ${i.version}\n`;
     }
   });
 
