@@ -1,8 +1,6 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const axios = require('axios');
-require('dotenv').config();
-
 
 const previousVersionsFilePath = 'slack-message/current-versions.json';
 const previousVersions = JSON.parse(fs.readFileSync(previousVersionsFilePath));
