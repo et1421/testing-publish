@@ -12,7 +12,7 @@ try {
   console.log('result', result);
 
   let data = JSON.stringify(result);
-  fs.writeFileSync('./current-versions.json', result);
+  fs.writeFileSync('slack-message/current-versions.json', result);
 
 } catch (error) {
   console.log(`Status Code: ${error.status} with '${error.message}'`);
