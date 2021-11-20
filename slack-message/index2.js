@@ -17,7 +17,7 @@ async function postToSlack(text) {
       },
       {
         type: 'section',
-        text: { type: 'mrkdwn', text },
+        text: { type: 'mrkdwn', text: encodeURIComponent(text) },
       },
     ],
     username: 'Bit Design system',
@@ -37,8 +37,7 @@ const getVersionsUpdate = (newVersions) => {
 
   newVersions.forEach(i => {
     if (i.version !== previousVersions[i.name]) {
-      console.log(`${i.name}: ${previousVersions[i.name]} ---> ${i.version}`);
-      text += `${i.name}: ${previousVersions[i.name]} ---> ${i.version}`;
+      text += `*${i.name}:* ${previousVersions[i.name]} ---> ${i.version}\n`;
     }
   });
 
