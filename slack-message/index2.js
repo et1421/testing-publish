@@ -37,12 +37,6 @@ function colorString(color, string) {
   return `${color}${string}${Color.Reset}`;
 }
 
-function colorLog(color, ...args) {
-  console.log(...args.map(
-    (it) => typeof it === "string" ? colorString(color, string) : it
-  ));
-}
-
 
 async function postToSlack(text) {
   const url = 'https://slack.com/api/chat.postMessage';
@@ -51,18 +45,33 @@ async function postToSlack(text) {
     blocks: [
       {
         type: 'section',
-        text: { type: 'mrkdwn', text: 'A new version of the design system was just published :rocket:.\nPlease, *update* your packages locally.' },
+        text: { type: 'mrkdwn', text: 'A new version of the design system was just published :rocket:.\nPlease, *update* your packages locally.' }
       },
       {
         type: 'section',
-        text: { type: 'mrkdwn', text: text },
-      },
+        text: { type: 'mrkdwn', text: text }
+      }
     ],
     username: 'Bit Design system',
-    icon_emoji: ':rocket:'
-  }, { headers: { authorization: `Bearer ${process.env.SLACK_TOKEN}` } });
+    icon_emoji: ':rocket:',
+  },
+  {
+    headers: {
+      // 'content-type': 'application/json',
+      'Content-type': 'application/json; charset=utf-8',
+      authorization: `Bearer ${process.env.SLACK_TOKEN}`
+    }
+  }).then((response) => {
+    if (response.data.error) {
+      console.log(colorString(Color.FgRed,'Slack message error:'), response.data.error);
+    } else {
+      console.log(colorString(Color.FgGreen,'Slack message successfully sent!'));
+    }
+  })
+    .catch(function(error) {
+      console.log(error)
+    });
 
-  console.log('Done', res.data);
 }
 
 const saveNewVersionToFile = (newVersions) => {
@@ -83,13 +92,15 @@ const getVersionsUpdate = (newVersions) => {
 }
 
 const getYarnUpdateOneliner = (newVersions) => {
-  let text = 'yarn add';
+  let text = '';
 
   newVersions.forEach(i => {
     if (i.version !== previousVersions[i.name]) {
       text += ` ${i.name}@${i.version}`;
     }
   });
+
+  text = (text !== '') ? `yarn add${text}` : text;
 
   return text;
 };
@@ -102,11 +113,13 @@ try {
 
 
   const yarnUpdate = getYarnUpdateOneliner(newVersions);
-  console.log(colorString(Color.FgMagenta,"Don't forget to update your packages:"), yarnUpdate);
+  if (yarnUpdate !== '') {
+    console.log(colorString(Color.FgMagenta,"Don't forget to update your packages:"), yarnUpdate);
+  }
 
 
   if (versionUpdateText !== '') {
-    // postToSlack(versionUpdateText).catch(err => console.log(err));
+    postToSlack(versionUpdateText).catch(err => console.log(err));
   }
 
   saveNewVersionToFile(newVersions);
