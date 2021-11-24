@@ -1,6 +1,8 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
-const axios = require('axios');
+// const axios = require('axios');
+const https = require('https');
+
 
 const previousVersionsFilePath = 'slack-message/current-versions.json';
 const previousVersions = JSON.parse(fs.readFileSync(previousVersionsFilePath));
@@ -37,10 +39,62 @@ function colorString(color, string) {
   return `${color}${string}${Color.Reset}`;
 }
 
+const httpPost = (options, body) => {
+  return new Promise((resolve, reject) => {
+    const clientRequest = https.request(options, incomingMessage => {
+      // Response object.
+      let response = {
+        statusCode: incomingMessage.statusCode,
+        headers: incomingMessage.headers,
+        body: []
+      };
+
+      // Collect response body data.
+      incomingMessage.on('data', chunk => {
+        response.body.push(chunk);
+      });
+
+      incomingMessage.on('end', () => {
+        if (response.body.length) {
+          response.body = response.body.join();
+
+          try {
+            response.body = JSON.parse(response.body);
+          } catch (error) {
+            // Silently fail if response is not JSON.
+          }
+        }
+
+        resolve(response);
+      });
+    });
+
+    // Reject on request error.
+    clientRequest.on('error', error => {
+      reject(error);
+    });
+
+    // Write request body.
+    clientRequest.write(body);
+
+    // Close HTTP connection.
+    clientRequest.end();
+  });
+};
 
 async function postToSlack(text) {
-  const url = 'https://slack.com/api/chat.postMessage';
-  const res = await axios.post(url, {
+
+  const options = {
+    hostname: 'slack.com',
+    path: '/api/chat.postMessage',
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json; charset=utf-8',
+      authorization: `Bearer ${process.env.SLACK_TOKEN}`
+    },
+  };
+
+  const body = {
     channel: '#testing-posting',
     blocks: [
       {
@@ -54,24 +108,19 @@ async function postToSlack(text) {
     ],
     username: 'Bit Design system',
     icon_emoji: ':rocket:',
-  },
-  {
-    headers: {
-      // 'content-type': 'application/json',
-      'Content-type': 'application/json; charset=utf-8',
-      authorization: `Bearer ${process.env.SLACK_TOKEN}`
-    }
-  }).then((response) => {
-    if (response.data.error) {
-      console.log(colorString(Color.FgRed,'Slack message error:'), response.data.error);
-    } else {
-      console.log(colorString(Color.FgGreen,'Slack message successfully sent!'));
-    }
-  })
-    .catch(function(error) {
-      console.log(error)
-    });
+  };
 
+  httpPost(options, JSON.stringify(body))
+    .then((response) => {
+      if (response.body.error) {
+        console.log(colorString(Color.FgRed,'Slack message error:'), response.body.error);
+      } else {
+        console.log(colorString(Color.FgGreen,'Slack message successfully sent!'));
+      }
+    })
+    .catch(function(error) {
+      console.error(error)
+    });
 }
 
 const saveNewVersionToFile = (newVersions) => {
